@@ -10,5 +10,122 @@ every environments have seperate aws account
 DEV,QA,UAT,PROD  
 
 s3 bucket different environments different buckets for one account [small companies]
+nagdevops-dev
+nagdevops-qa
+nagdevops-uat
+nagdevops-prod
 
 dynamodb different tables for different environments
+nagdevops-dev
+nagdevops-qa
+nagdevops-uat
+nagdevops-prod
+
+terraform {
+  backend "s3" {
+    bucket = "mybucket"
+    key    = "path/to/my/key"
+    region = "us-east-1"
+  }
+}
+
+
+terraform {
+  backend "s3" {
+   bucket = "nagdevops-dev"
+ key    = "multi-environments-tfvars-dev"
+ region = "us-east-1"
+ dynamodb_table = "nagdevops-dev"
+  }
+}
+
+so now we have to create multiple folders different environments
+
+variables
+---------
+default values
+db-dev, backend-dev, frontend-dev
+db-prod, backend-prod, frontend-prod
+db-qa, backend-qa, frontend-qa
+db-uat, backend-uat, frontend-qa 
+
+so first we have to decide DNS servers
+-----------------------------------------
+db-dev.nagdevops.online
+backend-dev.nagdevops.online
+frontend-dev.nagdevops.online
+
+db-prod.nagdevops.online
+backend-prod.nagdevops.online
+frontend-prod.nagdevops.online
+nagdevops.online -----public
+
+db-qa.nagdevops.online
+backend-qa.nagdevops.online
+frontend-qa.nagdevops.online
+
+db-uat.nagdevops.online
+backend-uat.nagdevops.online
+frontend-uat.nagdevops.online
+
+In real time every environments different domain names will maintain
+
+
+
+tagging 
+--------
+project = "expense"
+environments=dev/qa/uat/prod
+module=dev/qa/uat/prod
+terraform=true 
+
+
+
+
+Note:
+-----
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+      version = "5.59.0"
+    }
+  }
+  backend "s3" {
+    
+}
+}
+
+provider "aws" {
+  region = "us-east-1"
+}
+
+
+backend "s3" we will not given any value so we can use below 
+
+$ terraform init -backend-config=dev/backend.tf
+
+after run
+
+Initializing the backend...
+
+Successfully configured the backend "s3"! Terraform will automatically
+use this backend unless the backend configuration changes.
+
+for other environments
+---------------------
+$ terraform init -backend-config=prod/backend.tf
+$ terraform init -backend-config=uat/backend.tf
+$ terraform init -backend-config=qa/backend.tf
+
+terraform plan 
+--------------
+terraform plan -var-file=dev/dev.tfvars
+
+terraform apply 
+--------------
+$ terraform apply -var-file=dev/dev.tfvars  -auto-approve
+
+terraform destroy 
+------------------
+
