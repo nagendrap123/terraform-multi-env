@@ -1,0 +1,14 @@
+HOw to create multiple environments in terraform
+===================================================
+using tfvars
+-------------
+default variable values to override ----- tfvars
+code is same ----------- resource definitions
+
+every environments have seperate aws account
+----------------------------------------------
+DEV,QA,UAT,PROD  
+
+s3 bucket different environments different buckets for one account [small companies]
+
+dynamodb different tables for different environments
