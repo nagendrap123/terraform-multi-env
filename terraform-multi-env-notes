@@ -118,6 +118,8 @@ $ terraform init -backend-config=prod/backend.tf
 $ terraform init -backend-config=uat/backend.tf
 $ terraform init -backend-config=qa/backend.tf
 
+or 
+$ terraform init -reconfigure -backend-config=qa/backend.tf
 terraform plan 
 --------------
 terraform plan -var-file=dev/dev.tfvars
@@ -128,4 +130,4 @@ $ terraform apply -var-file=dev/dev.tfvars  -auto-approve
 
 terraform destroy 
 ------------------
-
+$ terraform destroy -var-file=dev/dev.tfvars  -auto-approve
